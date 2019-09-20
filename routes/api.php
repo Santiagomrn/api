@@ -21,4 +21,5 @@ Route::get('/greeting', function (Request $request){
     return 'Hello Worlddd!';
 });
 
-Route::post('products', "ProductController@store");/* agrego la ruta de /products y uso el cotrolador llamando a la función store */
+Route::post('products', "ProductController@store");
+/* agrego la ruta de /products y uso el cotrolador llamando a la función store */
