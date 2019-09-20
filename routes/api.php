@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/greeting', function (Request $request){
-    return 'Hello World!';
+    return 'Hello Worlddd!';
 });
 
 Route::post('products', "ProductController@store");/* agrego la ruta de /products y uso el cotrolador llamando a la función store */
