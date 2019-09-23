@@ -20,6 +20,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             // A decimal to store the price
             $table->decimal('price');
+
+           // $table->string('descripcion');
         });
     }
 
