@@ -23,3 +23,15 @@ Route::get('/greeting', function (Request $request){
 
 Route::POST('/products', 'ProductController@store');
 /* agrego la ruta de /products y uso el cotrolador llamando a la función store */
+
+Route::GET('/products', 'ProductController@index');
+/* agrego la ruta de /products y uso el cotrolador llamando a la función index */
+
+Route::PUT('/products/{id}', 'ProductController@update');
+/* agrego la ruta de /products y uso el cotrolador llamando a la función update */
+
+Route::get('/products/{id}', 'ProductController@show');
+/* agrego la ruta de /products y uso el cotrolador llamando a la función show */
+
+Route::delete('/products/{id}', 'ProductController@destroy');
+/* agrego la ruta de /products y uso el cotrolador llamando a la función delete */
