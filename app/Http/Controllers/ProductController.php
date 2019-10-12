@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product; //se incluye para usar el model Product Larabel toma como nombre del modelo el plural products
 use Illuminate\Http\Request;
+use PhpParser\Node\Name;
 
 class ProductController extends Controller
 {
@@ -40,6 +41,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+      $request()->validate([
+            'name'=>'required',
+            'price'=> 'numeric|gte:0|required'
+        ]);
         //
         $product = Product::create($request->all());//obtengo todo el contenido del la DB
 
