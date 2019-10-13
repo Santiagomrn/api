@@ -48,7 +48,7 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
             $error=[
-                "code" => "Error-1",
+                "code" => "ERROR-1",
                 "title" =>"Uprocessable Entity"
             ];
             return response()->json(['errors'=>[$error]],422);
@@ -75,7 +75,7 @@ class ProductController extends Controller
         //validar la existencia del producto con ese ID
         if($product==''){
             $error=[
-                "code" => "Error-2",
+                "code" => "ERROR-2",
                 "title" =>"Not Found"
             ];
             return response()->json(['errors'=>[$error]],404);
@@ -112,7 +112,7 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
             $error=[
-                "code" => "Error-1",
+                "code" => "ERROR-1",
                 "title" =>"Uprocessable Entity"
             ];
             return response()->json(['errors'=>[$error]],422);
@@ -122,7 +122,7 @@ class ProductController extends Controller
         //validación de que exite la entidad con la id adecuada
         if($product==''){
             $error=[
-                "code" => "Error-2",
+                "code" => "ERROR-2",
                 "title" =>"Not Found"
             ];
             return response()->json(['errors'=>[$error]],404);
@@ -142,7 +142,7 @@ class ProductController extends Controller
         $product=Product::find($id);
         if($product==''){
             $error=[
-                "code" => "Error-2",
+                "code" => "ERROR-2",
                 "title" =>"Not Found"
             ];
             return response()->json(['errors'=>[$error]],404);
