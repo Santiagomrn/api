@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Product; //se incluye para usar el model Product Larabel toma como nombre del modelo el plural products
 use Illuminate\Http\Request;
 use PhpParser\Node\Name;
-
+use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     /**
@@ -17,8 +17,6 @@ class ProductController extends Controller
     {
         //
         $products=Product::get(); //obtengo los productos de la base de datos utilizando el modelo Product
-
-
         return response()->json($products,200); //respondo con un json listando los productos y devolviendo un estatus 200
     }
 
@@ -41,11 +39,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-      $request()->validate([
+
+        $validator = Validator::make($request->all(), [
             'name'=>'required',
-            'price'=> 'numeric|gte:0|required'
+            'price'=> 'numeric|gt:0|required'
+
         ]);
-        //
+
+        if ($validator->fails()) {
+            $error=[
+                "code" => "Error-1",
+                "title" =>"Uprocessable Entity"
+            ];
+            return response()->json(['errors'=>[$error]],422);
+        }
+
+
+        // si el producto es validado correctamente
         $product = Product::create($request->all());//obtengo todo el contenido del la DB
 
         // Return a response with a product json
@@ -61,7 +71,15 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product=Product::findOrFail($id);//busco el producto el la base usando el modelo product
+        $product=Product::find($id);//busco el producto el la base usando el modelo product
+        //validar la existencia del producto con ese ID
+        if($product==''){
+            $error=[
+                "code" => "Error-2",
+                "title" =>"Not Found"
+            ];
+            return response()->json(['errors'=>[$error]],404);
+        }
         return response()->json($product,200);
     }
 
@@ -85,9 +103,31 @@ class ProductController extends Controller
      */
     public function update($id,Request $request)
     {
-        $product=Product::findOrFail($id);// busco el producto a actualizar con base a la id
-        $product->update($request->all());//actualizo el producto
+        //validar datos del request
+        $validator = Validator::make($request->all(), [
+            'name'=>'required',
+            'price'=> 'numeric|gt:0|required'
 
+        ]);
+
+        if ($validator->fails()) {
+            $error=[
+                "code" => "Error-1",
+                "title" =>"Uprocessable Entity"
+            ];
+            return response()->json(['errors'=>[$error]],422);
+        }
+        //consultar a la base de datos
+        $product=Product::find($id);// busco el producto a actualizar con base a la id
+        //validación de que exite la entidad con la id adecuada
+        if($product==''){
+            $error=[
+                "code" => "Error-2",
+                "title" =>"Not Found"
+            ];
+            return response()->json(['errors'=>[$error]],404);
+        }
+        $product->update($request->all());//actualizo el producto
         return response()->json($product,200);
     }
 
@@ -99,10 +139,15 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product=Product::findOrFail($id);
+        $product=Product::find($id);
+        if($product==''){
+            $error=[
+                "code" => "Error-2",
+                "title" =>"Not Found"
+            ];
+            return response()->json(['errors'=>[$error]],404);
+        }
         $product->delete();// Destruyo el producto
-
-
-        return response("",200);
+        return response("",204);
     }
 }
