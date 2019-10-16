@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product; //se incluye para usar el model Product Larabel toma como nombre del modelo el plural products
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductStoreRequest;
 use PhpParser\Node\Name;
 use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
@@ -71,15 +72,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product=Product::find($id);//busco el producto el la base usando el modelo product
+        $product=Product::findorfail($id);//busco el producto el la base usando el modelo product
         //validar la existencia del producto con ese ID
-        if($product==''){
-            $error=[
-                "code" => "ERROR-2",
-                "title" =>"Not Found"
-            ];
-            return response()->json(['errors'=>[$error]],404);
-        }
+
         return response()->json($product,200);
     }
 
@@ -118,15 +113,9 @@ class ProductController extends Controller
             return response()->json(['errors'=>[$error]],422);
         }
         //consultar a la base de datos
-        $product=Product::find($id);// busco el producto a actualizar con base a la id
+        $product=Product::findorfail($id);// busco el producto a actualizar con base a la id
         //validación de que exite la entidad con la id adecuada
-        if($product==''){
-            $error=[
-                "code" => "ERROR-2",
-                "title" =>"Not Found"
-            ];
-            return response()->json(['errors'=>[$error]],404);
-        }
+
         $product->update($request->all());//actualizo el producto
         return response()->json($product,200);
     }
@@ -139,14 +128,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product=Product::find($id);
-        if($product==''){
-            $error=[
-                "code" => "ERROR-2",
-                "title" =>"Not Found"
-            ];
-            return response()->json(['errors'=>[$error]],404);
-        }
+        $product=Product::findorfail($id);
+
         $product->delete();// Destruyo el producto
         return response("",204);
     }
