@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product; //se incluye para usar el model Product Larabel toma como nombre del modelo el plural products
 use Illuminate\Http\Request;
-use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductRequest;
 use PhpParser\Node\Name;
 use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
@@ -38,24 +38,8 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'name'=>'required',
-            'price'=> 'numeric|gt:0|required'
-
-        ]);
-
-        if ($validator->fails()) {
-            $error=[
-                "code" => "ERROR-1",
-                "title" =>"Uprocessable Entity"
-            ];
-            return response()->json(['errors'=>[$error]],422);
-        }
-
-
         // si el producto es validado correctamente
         $product = Product::create($request->all());//obtengo todo el contenido del la DB
 
@@ -73,7 +57,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product=Product::findorfail($id);//busco el producto el la base usando el modelo product
-        //validar la existencia del producto con ese ID
+
 
         return response()->json($product,200);
     }
@@ -96,25 +80,12 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request)
+    public function update($id,ProductRequest $request)
     {
-        //validar datos del request
-        $validator = Validator::make($request->all(), [
-            'name'=>'required',
-            'price'=> 'numeric|gt:0|required'
 
-        ]);
-
-        if ($validator->fails()) {
-            $error=[
-                "code" => "ERROR-1",
-                "title" =>"Uprocessable Entity"
-            ];
-            return response()->json(['errors'=>[$error]],422);
-        }
         //consultar a la base de datos
         $product=Product::findorfail($id);// busco el producto a actualizar con base a la id
-        //validación de que exite la entidad con la id adecuada
+
 
         $product->update($request->all());//actualizo el producto
         return response()->json($product,200);
