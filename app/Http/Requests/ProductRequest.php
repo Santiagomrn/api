@@ -5,6 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+
+use function PHPSTORM_META\type;
+
 class ProductRequest extends FormRequest
 {
     /**
@@ -25,8 +28,13 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'price'=> 'numeric|gt:0|required'
+            'data'=>[
+                'type'=>'required',
+                'attributes'=>[
+                    'name'=>'required',
+                    'price'=> 'numeric|gt:0|required'
+                ]
+            ]
         ];
     }
  //funcion protegida que usa use Illuminate\Contracts\Validation\Validator;

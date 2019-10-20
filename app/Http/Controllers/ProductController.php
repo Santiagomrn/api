@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use PhpParser\Node\Name;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Product as ProductResource;
+use App\Http\Resources\ProductCollection;
+
 class ProductController extends Controller
 {
     /**
@@ -16,8 +19,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
         $products=Product::get(); //obtengo los productos de la base de datos utilizando el modelo Product
+        $products= new ProductCollection($products);
         return response()->json($products,200); //respondo con un json listando los productos y devolviendo un estatus 200
     }
 
@@ -41,11 +44,13 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         // si el producto es validado correctamente
-        $product = Product::create($request->all());//obtengo todo el contenido del la DB
+        $data=$request['data']['attributes']; //obtengo los atributos del producto
+        $product =  Product::create($data);//obtengo todo el contenido del la DB
 
         // Return a response with a product json
         // representation and a 201 status code
-        return response()->json($product,201);
+        return response()->json(new ProductResource($product),201);
+
     }
 
     /**
@@ -59,7 +64,7 @@ class ProductController extends Controller
         $product=Product::findorfail($id);//busco el producto el la base usando el modelo product
 
 
-        return response()->json($product,200);
+       return response()->json(new ProductResource($product),201);
     }
 
     /**
@@ -82,13 +87,11 @@ class ProductController extends Controller
      */
     public function update($id,ProductRequest $request)
     {
-
+        $data=$request['data']['attributes']; //obtengo los atributos del producto
         //consultar a la base de datos
         $product=Product::findorfail($id);// busco el producto a actualizar con base a la id
-
-
-        $product->update($request->all());//actualizo el producto
-        return response()->json($product,200);
+        $product->update($data);//actualizo el producto
+        return response()->json( new ProductResource($product),200);
     }
 
     /**
