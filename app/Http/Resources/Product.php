@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Product extends JsonResource
@@ -13,20 +14,11 @@ class Product extends JsonResource
      * @return array
      */
     public function toArray($request)
-    {
-        $data=[
-            "type"=>"Products",
-            "id"=> $this->id,
-            "attributes"=>[
-                "name"=>$this->name,
-                "price"=> $this->price
-            ],
-            "links"=>[
-                "self"=>"http://127.0.0.1:8000/api/products/".$this->id
-            ]
-        ];
+    { //transformo los datos al formato json deseado
+        $this->resource=(new ProductData($this->resource));
+
         return [
-           "data"=>$data
+           "data"=>$this->resource
         ];
     }
 }
