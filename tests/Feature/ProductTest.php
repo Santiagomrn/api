@@ -8,6 +8,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use function PHPSTORM_META\type;
+
 class ProductTest extends TestCase
 {
 
@@ -21,8 +23,13 @@ class ProductTest extends TestCase
         // Given
 
         $productData = [
-            'name' => 'Super Product',
-            'price' => '23.30'
+            'data'=>[
+                'type'=>'Products',
+                'attributes'=>[
+                    'name'=>'Other class homework',
+                    'price'=> '1'
+                ]
+            ]
         ];
 
         // When
@@ -34,27 +41,44 @@ class ProductTest extends TestCase
 
         // Assert the response has the correct structure
         $response->assertJsonStructure([
-            'id',
-            'name',
-            'price'
+            'data'=>[
+                'type',
+                'id',
+                'attributes'=>[
+                    'name',
+                    'price'
+                ],
+                'links'=>[
+                    'self'
+                ]
+            ]
         ]);
-
+        $body = $response->decodeResponseJson();
         // Assert the product was created
         // with the correct data
         $response->assertJsonFragment([
-            'name' => 'Super Product',
-            'price' => '23.30'
+            'data'=>[
+                "type"=>$body['data']['type'],
+                "id"=>$body['data']['id'] ,
+                'attributes'=>[
+                    'name'=>$body['data']['attributes']['name'],
+                    'price'=>$body['data']['attributes']['price']
+                ],
+                'links'=>[
+                    'self'=>"http://127.0.0.1:8000/api/products/".$body['data']['id']
+                ]
+            ]
         ]);
 
-        $body = $response->decodeResponseJson();
+
 
         // Assert product is on the database
         $this->assertDatabaseHas(
             'products',
             [
-                'id' => $body['id'],
-                'name' => 'Super Product',
-                'price' => '23.30'
+                'id' => $body['data']['id'],
+                'name' => $productData['data']['attributes']['name'],
+                'price' => $productData['data']['attributes']['price']
             ]
         );
     }

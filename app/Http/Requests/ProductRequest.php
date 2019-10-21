@@ -28,13 +28,9 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'data'=>[
-                'type'=>'required',
-                'attributes'=>[
-                    'name'=>'required',
-                    'price'=> 'numeric|gt:0|required'
-                ]
-            ]
+            'data.type'=>'required',
+            'data.attributes.name'=>'required',
+            'data.atributes.price'=>'numeric|gt:0|required',
         ];
     }
  //funcion protegida que usa use Illuminate\Contracts\Validation\Validator;
