@@ -18,7 +18,7 @@ class Product extends JsonResource
         $this->resource=(new ProductData($this->resource));
 
         return [
-           "data"=>$this->resource
+            'data'=>$this->resource
         ];
     }
 }

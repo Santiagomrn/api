@@ -30,7 +30,7 @@ class ProductRequest extends FormRequest
         return [
             'data.type'=>'required',
             'data.attributes.name'=>'required',
-            'data.atributes.price'=>'numeric|gt:0|required',
+            'data.attributes.price'=>'numeric|gt:0|required',
         ];
     }
  //funcion protegida que usa use Illuminate\Contracts\Validation\Validator;

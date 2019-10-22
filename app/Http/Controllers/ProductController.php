@@ -64,7 +64,7 @@ class ProductController extends Controller
         $product=Product::findorfail($id);//busco el producto el la base usando el modelo product
 
 
-       return response()->json(new ProductResource($product),201);
+       return response()->json(new ProductResource($product),200);
     }
 
     /**
