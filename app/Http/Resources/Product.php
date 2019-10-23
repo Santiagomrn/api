@@ -14,11 +14,21 @@ class Product extends JsonResource
      * @return array
      */
     public function toArray($request)
-    { //transformo los datos al formato json deseado
-        $this->resource=(new ProductData($this->resource));
+    {
 
         return [
-            'data'=>$this->resource
+
+            'type'=>'Products',
+            'id'=> $this->id,
+            'attributes'=>[
+                'name'=>$this->name,
+                'price'=> $this->price
+            ],
+            'links'=>[
+                'self'=>"http://127.0.0.1:8000/api/products/".$this->id
+            ]
+
+
         ];
     }
 }

@@ -20,8 +20,8 @@ class ProductController extends Controller
     public function index()
     {
         $products=Product::get(); //obtengo los productos de la base de datos utilizando el modelo Product
-        $products= new ProductCollection($products);
-        return response()->json($products,200); //respondo con un json listando los productos y devolviendo un estatus 200
+
+        return new ProductCollection($products); //respondo con un json listando los productos y devolviendo un estatus 200
     }
 
     /**
@@ -49,7 +49,7 @@ class ProductController extends Controller
 
         // Return a response with a product json
         // representation and a 201 status code
-        return response()->json(new ProductResource($product),201);
+        return new ProductResource($product);
 
     }
 
@@ -63,8 +63,8 @@ class ProductController extends Controller
     {
         $product=Product::findorfail($id);//busco el producto el la base usando el modelo product
 
-
-       return response()->json(new ProductResource($product),200);
+        //status code 200
+       return new ProductResource($product);
     }
 
     /**
@@ -91,7 +91,8 @@ class ProductController extends Controller
         //consultar a la base de datos
         $product=Product::findorfail($id);// busco el producto a actualizar con base a la id
         $product->update($data);//actualizo el producto
-        return response()->json( new ProductResource($product),200);
+        //status 200
+        return new ProductResource($product);
     }
 
     /**

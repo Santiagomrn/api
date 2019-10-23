@@ -16,13 +16,10 @@ class ProductCollection extends ResourceCollection
     {
 
         $this->collection->transform(function (Product $product) {
-            return (new ProductData($product));
+            return (new ProductResource($product));
         });
 
-        return [
-            'data'=>$this->collection,
-
-        ];
+        return $this->collection;
 
     }
 }
