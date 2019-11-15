@@ -25,7 +25,7 @@ class Product extends JsonResource
                 'price'=> $this->price
             ],
             'links'=>[
-                'self'=>"http://127.0.0.1:8000/api/products/".$this->id
+                'self'=>config('app.url')."/api/products/".$this->id
             ]
 
 
